@@ -1,0 +1,187 @@
+app_images:
+- appImageId: 14659e0b1a9f4ee5a44b44e283fc360d
+  flavourName: vanilla
+  image:
+    buildAt: '2024-11-13T16:01:22.701124'
+    imageString: jhnnsrs/kare-next:0.0.1-vanilla
+  inspection:
+    requirements:
+    - description: An instance of ArkitektNext Datalayer to make requests to the user's
+        data
+      key: datalayer
+      optional: true
+      service: live.arkitekt.s3
+    - description: An instance of ArkitektNext fluss to retrieve graphs from
+      key: fluss
+      optional: false
+      service: live.arkitekt.fluss
+    - description: An instance of ArkitektNext kabinet to relate entities
+      key: kabinet
+      optional: false
+      service: live.arkitekt.kabinet
+    - description: An instance of ArkitektNext kraph to relate entities
+      key: kraph
+      optional: false
+      service: live.arkitekt.kraph
+    - description: An instance of ArkitektNext Lok to authenticate the user
+      key: livekit
+      optional: false
+      service: io.livekit.livekit
+    - description: An instance of ArkitektNext Lok to authenticate the user
+      key: lok
+      optional: false
+      service: live.arkitekt.lok
+    - description: An instance of ArkitektNext Mikro to make requests to the user's
+        data
+      key: mikro
+      optional: true
+      service: live.arkitekt.mikro
+    - description: An instance of ArkitektNext Rekuest to assign to nodes
+      key: rekuest
+      optional: false
+      service: live.arkitekt.rekuest
+    - description: An instance of ArkitektNext Lok to authenticate the user
+      key: unlok
+      optional: false
+      service: live.arkitekt.lok
+    size: 10123825057
+    templates:
+    - definition:
+        args: []
+        collections: []
+        description: Check if the gpu is available
+        interfaces: []
+        isDev: false
+        isTestFor: []
+        kind: FUNCTION
+        name: Check GPU
+        portGroups: []
+        returns:
+        - key: return0
+          kind: STRING
+          nullable: false
+          scope: GLOBAL
+        stateful: false
+      dependencies: []
+      dynamic: false
+      interface: gpu_is_available
+    - definition:
+        args:
+        - assignWidget:
+            kind: SEARCH
+            query: "query SearchLinkedExpressions($search: String, $values: [ID!])\
+              \ {\n  options: linkedExpressions(\n    filters: {search: $search, ids:\
+              \ $values}\n    pagination: {limit: 10}\n  ) {\n    value: id\n    label:\
+              \ label\n    __typename\n  }\n}"
+            ward: kraph
+          identifier: '@kraph/linkedexpression'
+          key: expression
+          kind: STRUCTURE
+          nullable: false
+          scope: GLOBAL
+        - default: 100
+          description: Number of epochs. Defaults to 10.
+          key: epochs
+          kind: INT
+          label: epochs
+          nullable: true
+          scope: GLOBAL
+        - default: 1024
+          description: Number of patches per image. Defaults to 1024.
+          key: patches_per_image
+          kind: INT
+          label: patches_per_image
+          nullable: true
+          scope: GLOBAL
+        - default: 400
+          description: Number of trainsteps per epoch. Defaults to 10.
+          key: trainsteps_per_epoch
+          kind: INT
+          label: trainsteps_per_epoch
+          nullable: true
+          scope: GLOBAL
+        - default: 0.1
+          description: Validation split. Defaults to 0.1.
+          key: validation_split
+          kind: FLOAT
+          label: validation_split
+          nullable: true
+          scope: GLOBAL
+        collections: []
+        description: Trains a care model according on a specific context.
+        interfaces: []
+        isDev: false
+        isTestFor: []
+        kind: FUNCTION
+        name: Train Care Model
+        portGroups: []
+        returns:
+        - description: The Model
+          identifier: kraph.api.schema.model
+          key: return0
+          kind: STRUCTURE
+          nullable: false
+          scope: LOCAL
+        stateful: false
+      dependencies: []
+      dynamic: false
+      interface: train_care_model
+    - definition:
+        args:
+        - assignWidget:
+            kind: SEARCH
+            query: "query SearchImages($search: String, $values: [ID!]) {\n  options:\
+              \ images(\n    filters: {name: {contains: $search}, ids: $values}\n\
+              \    pagination: {limit: 10}\n  ) {\n    value: id\n    label: name\n\
+              \    __typename\n  }\n}"
+            ward: mikro
+          identifier: '@mikro/image'
+          key: representation
+          kind: STRUCTURE
+          nullable: false
+          scope: GLOBAL
+        - description: The model
+          identifier: kraph.api.schema.model
+          key: model
+          kind: STRUCTURE
+          label: model
+          nullable: false
+          scope: LOCAL
+        collections: []
+        description: Use a care model and some images to generate images
+        interfaces: []
+        isDev: false
+        isTestFor: []
+        kind: FUNCTION
+        name: Predict Care
+        portGroups: []
+        returns:
+        - assignWidget:
+            kind: SEARCH
+            query: "query SearchImages($search: String, $values: [ID!]) {\n  options:\
+              \ images(\n    filters: {name: {contains: $search}, ids: $values}\n\
+              \    pagination: {limit: 10}\n  ) {\n    value: id\n    label: name\n\
+              \    __typename\n  }\n}"
+            ward: mikro
+          description: The predicted images
+          identifier: '@mikro/image'
+          key: return0
+          kind: STRUCTURE
+          nullable: false
+          scope: GLOBAL
+        stateful: false
+      dependencies: []
+      dynamic: false
+      interface: predict
+  manifest:
+    author: jhnnsrs
+    entrypoint: app
+    identifier: kare-next
+    scopes:
+    - read
+    version: 0.0.1
+  selectors:
+  - cudaCores: 1000
+    cudaVersion: '5'
+    kind: cuda
+latest_app_image: 14659e0b1a9f4ee5a44b44e283fc360d

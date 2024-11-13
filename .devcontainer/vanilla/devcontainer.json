@@ -1,0 +1,8 @@
+{
+  "name": "kare-next vanilla Devcontainer",
+  "build": {
+    "dockerfile": "/home/jhnnsrs/Code/apps/kare-next/.arkitekt_next/flavours/vanilla/Dockerfile",
+    "context": "../.."
+  },
+  "runArgs": ["--network=host", "--gpus=all"]
+}
